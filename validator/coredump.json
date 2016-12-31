@@ -1,0 +1,51 @@
+{
+    "api": "0.13",
+    "cam": [
+        "https://webcam.coredump.ch/cams/ultimaker_0.jpg"
+    ],
+    "contact": {
+        "email": "vorstand@lists.coredump.ch",
+        "irc": "irc://freenode.net/#coredump",
+        "twitter": "@coredump_ch"
+    },
+    "feeds": {
+        "blog": {
+            "type": "rss",
+            "url": "https://www.coredump.ch/feed/"
+        }
+    },
+    "issue_report_channels": [
+        "email",
+        "twitter"
+    ],
+    "location": {
+        "address": "Zürcherstrasse 6, 8640 Rapperswil, Switzerland",
+        "lat": 47.22939,
+        "lon": 8.82041
+    },
+    "logo": "https://www.coredump.ch/wp-content/uploads/2016/11/logo.png",
+    "projects": [
+        "https://www.coredump.ch/projekte/",
+        "https://forum.coredump.ch/c/projects",
+        "https://github.com/coredump-ch/"
+    ],
+    "sensors": {
+        "people_now_present": [
+            {
+                "location": "Hackerspace",
+                "value": 0
+            }
+        ]
+    },
+    "space": "coredump",
+    "spacefed": {
+        "spacenet": false,
+        "spacephone": false,
+        "spacesaml": false
+    },
+    "state": {
+        "message": "Open Mondays from 20:00",
+        "open": false
+    },
+    "url": "https://www.coredump.ch/"
+}

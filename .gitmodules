@@ -1,0 +1,3 @@
+[submodule "validator/schema"]
+	path = validator/schema
+	url = git@github.com:spacedirectory/schema.git
