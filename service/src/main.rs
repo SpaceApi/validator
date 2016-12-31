@@ -12,7 +12,7 @@ struct ValidationRequest {
     schema:  String,
 }
 
-impl ToJson for Person {
+impl ToJson for ValidationRequest {
     fn to_json(&self) -> Json {
         let mut map = BTreeMap::new();
         map.insert("version".to_string(), self.version.to_json());
