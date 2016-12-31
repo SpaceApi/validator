@@ -1,5 +1,5 @@
 [package]
-name = "spaceapi-validator"
+name = "spaceapi-validator-service"
 version = "0.1.0"
 authors = ["Stefan Schindler <dns2utf8@estada.ch>"]
 
