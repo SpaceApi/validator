@@ -7,7 +7,7 @@ use nickel::{Nickel, JsonBody, HttpRouter, MediaType};
 use rustc_serialize::json::{Json, ToJson, encode};
 
 #[derive(RustcDecodable, RustcEncodable)]
-struct Person {
+struct ValidationRequest {
     version: String,
     schema:  String,
 }
@@ -32,11 +32,16 @@ fn main() {
     let mut server = Nickel::new();
 
     // try it with curl
-    // curl 'http://localhost:6767/a/post/request' -H 'Content-Type: application/json;charset=UTF-8'  --data-binary $'{"version":"0.13", "schema":"{...}"}'
-    server.post("/", middleware! { |request, response|
-        let person = try_with!(response, {
-            request.json_as::<Person>().map_err(|e| (StatusCode::BadRequest, e))
+    // curl 'http://localhost:6767/' -H 'Content-Type: application/json;charset=UTF-8'  --data-binary $'{"version":"0.13", "schema":"{...}"}'
+    server.post("/", middleware! { |request, mut response|
+        response.headers_mut().set_raw("Access-Control-Allow-Origin", vec![b"*".to_vec()]);
+
+        let vr = try_with!(response, {
+            request.json_as::<ValidationRequest>().map_err(|e| (StatusCode::BadRequest, e))
         });
+
+
+        // TODO: insert validation here
 
         //format!("Hello {} {}", person.version, person.schema)
         encode(&Result {
