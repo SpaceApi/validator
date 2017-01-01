@@ -35,6 +35,7 @@ fn main() {
     // curl 'http://localhost:6767/' -H 'Content-Type: application/json;charset=UTF-8'  --data-binary $'{"version":"0.13", "schema":"{...}"}'
     server.post("/", middleware! { |request, mut response|
         response.headers_mut().set_raw("Access-Control-Allow-Origin", vec![b"*".to_vec()]);
+        response.headers_mut().set_raw("Access-Control-Allow-Methods", vec![b"POST,OPTIONS".to_vec()]);
 
         let vr = try_with!(response, {
             request.json_as::<ValidationRequest>().map_err(|e| (StatusCode::BadRequest, e))
@@ -49,6 +50,13 @@ fn main() {
             status: "OK".into(),
             message: None,
         }).unwrap()
+    });
+
+    server.get("/", middleware! { |request, mut response|
+        response.headers_mut().set_raw("Access-Control-Allow-Origin", vec![b"*".to_vec()]);
+        response.headers_mut().set_raw("Access-Control-Allow-Methods", vec![b"POST,OPTIONS".to_vec()]);
+
+        "OK"
     });
 
     server.listen("127.0.0.1:6767").unwrap();

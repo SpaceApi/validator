@@ -4,14 +4,19 @@ var Validator = (function() {
   var version_selector = '#version';
   var submit_selector = '#submit_validate';
 
-  var req = new XMLHttpRequest();
+  var req = undefined;
 
-  req.open('POST', validator_target, true);
-  req.setRequestHeader('Content-Type', 'application/json');
-
-  req.onreadystatechange = console.log;
+  prepareNewRequest();
 
   document.querySelector(submit_selector).onclick = validate;
+
+  req.onreadystatechange = function(event) {
+    console.log(event);
+
+    if (req.readyState === 4) {
+      prepareNewRequest();
+    }
+  };
 
   return {
     req: req,
@@ -30,5 +35,14 @@ var Validator = (function() {
     var element = document.querySelector(selector);
 
     return element.value || element.innerHTML || '';
+  }
+
+  function prepareNewRequest() {
+    req = new XMLHttpRequest();
+
+    req.open('POST', validator_target, true);
+    req.setRequestHeader('Content-Type', 'application/json');
+
+    req.onreadystatechange = console.log;
   }
 })();
