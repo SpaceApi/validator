@@ -1,8 +1,8 @@
 [package]
-name = "spaceapi-validator-rs"
+name = "spaceapi_validator"
 version = "0.1.0"
 authors = ["Raphael Nestler <raphael.nestler@gmail.com>"]
 
 [dependencies]
-valico = "*"
-serde_json = "*"
+valico = "1.0"
+serde_json = "0.8"

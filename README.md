@@ -4,6 +4,14 @@ Written in [Rust](https://rust-lang.org).
 
 Insert Build Badge here [ ...... ]
 
+# How to build?
+
+    git submodule init
+    git submodule update
+
+    cd service
+    cargo build
+
 # Goals
 
   - Validator

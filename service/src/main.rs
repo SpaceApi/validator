@@ -1,5 +1,6 @@
 #[macro_use] extern crate nickel;
 extern crate rustc_serialize;
+extern crate spaceapi_validator;
 
 use std::collections::BTreeMap;
 use nickel::status::StatusCode;
