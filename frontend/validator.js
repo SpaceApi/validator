@@ -25,6 +25,7 @@ var Validator = (function() {
   function validate(ev) {
     banner.className = 'processing';
     ev.preventDefault();
+    offlineCheck();
 
     var content = getValue(textarea_selector);
 
@@ -36,6 +37,7 @@ var Validator = (function() {
   function validate_url(ev) {
     banner.className = 'fetching';
     ev.preventDefault();
+    offlineCheck();
 
     var url = getValue(url_input);
     if (url.indexOf('http://') === -1 && url.indexOf('https://') === -1) {
@@ -78,14 +80,29 @@ var Validator = (function() {
       appendLog(req.responseText);
 
       if (req.readyState === 4) {
-        var data = JSON.parse(req.responseText);
+        if (req.status === 0) {
+          appendLog('Unable to connect to validator "'+validator_target+'". Is it online?');
 
-        banner.className = data.status
+          banner.className = 'ERROR';
+        } else {
+          var data = JSON.parse(req.responseText);
+
+          banner.className = data.status;
+        }
       }
     };
   }
 
   function appendLog(text) {
     log.innerHTML += text + '\n';
+  }
+
+  function offlineCheck() {
+    if (!navigator.onLine) {
+      appendLog('You are offline!');
+      banner.className = '';
+
+      throw "offline";
+    }
   }
 })();

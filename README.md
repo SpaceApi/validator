@@ -24,6 +24,10 @@ Start the service:
     cd service
     cargo run
 
+Then open the page with your favorite browser:
+
+    http://localhost:8080/validator.html
+
 # Goals
 
   - Validator
