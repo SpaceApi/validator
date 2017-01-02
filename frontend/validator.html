@@ -7,20 +7,30 @@
   <body>
     <section>
       <h1>SpaceAPI endpoint validator</h1>
-      <div>
-        Select version:
-        <select id="version">
-          <option>0.13</option>
-          <option>0.12</option>
-          <option>0.11</option>
-          <option>0.10</option>
-          <option>0.9</option>
-          <option>0.8</option>
-        </select>
+
+      <form>
+        <p>
+          Validate URL:
+          <input id="input_url" type="url" value="https://status.crdmp.ch/">
+          <input id="submit_validate_url" type="submit" value="Validate URL">
+        </p>
+
+        <p>Paste your output here:</p>
+        <textarea id="content"></textarea>
+        <input id="submit_validate" type="submit" value="Validate">
+      </form>
+
+      <div id="banner">
+        <div id="OK">OK</div>
+        <div id="ERROR">ERROR</div>
+        <div id="processing">Processing request, please hold ...</div>
+        <div id="fetching">Fetching data, please hold ...</div>
       </div>
-      <p>Paste your output here:</p>
-      <textarea id="content"></textarea>
-      <input id="submit_validate" type="submit" value="Validate">
+
+      <p>
+        <h2>Log</h2>
+        <pre id="log"></pre>
+      </p>
     </section>
     <script src="validator.js"></script>
   </body>

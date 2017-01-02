@@ -9,17 +9,7 @@ use rustc_serialize::json::{Json, ToJson, encode};
 
 #[derive(RustcDecodable, RustcEncodable)]
 struct ValidationRequest {
-    version: String,
     schema:  String,
-}
-
-impl ToJson for ValidationRequest {
-    fn to_json(&self) -> Json {
-        let mut map = BTreeMap::new();
-        map.insert("version".to_string(), self.version.to_json());
-        map.insert("schema" .to_string(), self.schema .to_json());
-        Json::Object(map)
-    }
 }
 
 #[derive(RustcDecodable, RustcEncodable)]
