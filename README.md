@@ -27,12 +27,3 @@ Start the service:
 Then open the page with your favorite browser:
 
     http://localhost:8080/validator.html
-
-# Goals
-
-  - Validator
-    - Form
-    - Route
-  - Directory
-    - In Memory
-    - Persistent Directory
