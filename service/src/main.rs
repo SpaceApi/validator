@@ -1,6 +1,6 @@
 #[macro_use] extern crate nickel;
 extern crate rustc_serialize;
-extern crate spaceapi_validator;
+extern crate spacedirectory_validator;
 
 use std::collections::BTreeMap;
 use nickel::status::StatusCode;
@@ -31,7 +31,7 @@ fn main() {
             request.json_as::<ValidationRequest>().map_err(|e| (StatusCode::BadRequest, e))
         });
 
-        let result = spaceapi_validator::validate_spaceapi_json(&*vr.schema);
+        let result = spacedirectory_validator::validate_spaceapi_json(&*vr.schema);
         let result = match result {
           Ok(state) => Result {
             version: "TODO".into(),

@@ -1,5 +1,5 @@
 [package]
-name = "spaceapi-validator"
+name = "spacedirectory-validator"
 version = "0.1.0"
 authors = ["Raphael Nestler <raphael.nestler@gmail.com>"]
 
