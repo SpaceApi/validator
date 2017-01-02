@@ -12,6 +12,18 @@ Insert Build Badge here [ ...... ]
     cd service
     cargo build
 
+# Test validator locally
+
+Start the frontend:
+
+    cd frontend
+    python -m http.server 8080
+
+Start the service:
+
+    cd service
+    cargo run
+
 # Goals
 
   - Validator
