@@ -49,18 +49,19 @@ fn main() {
         };
 
         //format!("Hello {} {}", person.version, person.schema)
+        response.set(MediaType::Json);
         encode(&result).unwrap()
     });
 
 
     // Supporting CORS
-    server.get("/", middleware! { |request, mut response|
+    server.get("/", middleware! { |_, mut response|
         set_headers(&mut response);
 
         "OK"
     });
 
-    server.options("/", middleware! { |request, mut response|
+    server.options("/", middleware! { |_, mut response|
         set_headers(&mut response);
 
         "OK"
