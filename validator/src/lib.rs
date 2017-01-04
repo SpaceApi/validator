@@ -24,7 +24,7 @@ pub fn get_schema(api_version: &str) -> Result<Value> {
 pub fn validate_spaceapi_json(json: &str) -> Result<json_schema::ValidationState> {
     let json_value: Value = json.parse()?;
 
-    let json_obj = json_value.as_object().ok_or("Json not an object")?;
+    let json_obj = json_value.as_object().ok_or("Parameter is not a JSON object")?;
 
     let version = json_obj.get("api").ok_or("api field missing")?
         .as_str().ok_or("api value not a string")?;
