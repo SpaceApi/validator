@@ -6,3 +6,4 @@ authors = ["Raphael Nestler <raphael.nestler@gmail.com>"]
 [dependencies]
 valico = "1.0"
 serde_json = "0.8"
+error-chain = "0.7"
