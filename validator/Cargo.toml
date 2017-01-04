@@ -1,7 +1,10 @@
 [package]
 name = "spaceapi-validator"
 version = "0.1.0"
+repository = "https://github.com/spacedirectory/validator"
 authors = ["Raphael Nestler <raphael.nestler@gmail.com>"]
+description = "Validator for Space API JSON data."
+keywords = ["spaceapi", "validator", "hackerspaces", "status", "api"]
 
 [dependencies]
 valico = "1.0"
