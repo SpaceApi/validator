@@ -5,16 +5,9 @@ rust:
 env:
   - CRATE=service
   - CRATE=validator
-before_script:
-  - |
-    python --version &&
-    pip --version &&
-    pip install 'travis-cargo<0.2' --user &&
-    export PATH=$HOME/.local/bin:$PATH &&
-    export PATH=$HOME/Library/Python/2.7/bin:$PATH
 script:
   - |
     cd $CRATE &&
-    travis-cargo build &&
-    travis-cargo test &&
-    travis-cargo bench
+    cargo build &&
+    cargo test &&
+    cargo bench
