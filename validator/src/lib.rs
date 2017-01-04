@@ -7,7 +7,7 @@ use valico::json_schema;
 
 pub mod errors;
 
-use errors::*;
+use errors::{Result, ErrorKind};
 
 pub fn get_schema(api_version: &str) -> Result<Value> {
     let schema = match api_version {
