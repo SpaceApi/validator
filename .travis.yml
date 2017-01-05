@@ -1,0 +1,13 @@
+sudo: false
+language: rust
+rust:
+  - stable
+env:
+  - CRATE=service
+  - CRATE=validator
+script:
+  - |
+    cd $CRATE &&
+    cargo build &&
+    cargo test &&
+    cargo bench
