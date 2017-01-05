@@ -2,7 +2,7 @@
 
 Written in [Rust](https://rust-lang.org).
 
-Insert Build Badge here [ ...... ]
+[![Travis CI][travis-ci-badge]][travis-ci]
 
 # How to build?
 
@@ -27,3 +27,8 @@ Start the service:
 Then open the page with your favorite browser:
 
     http://localhost:8080/validator.html
+
+
+<!-- Badges -->
+[travis-ci]: https://travis-ci.org/spacedirectory/validator
+[travis-ci-badge]: https://img.shields.io/travis/spacedirectory/validator.svg
