@@ -31,4 +31,4 @@ Then open the page with your favorite browser:
 
 <!-- Badges -->
 [travis-ci]: https://travis-ci.org/spacedirectory/validator
-[travis-ci-badge]: https://img.shields.io/travis/spacedirectory/validator.svg
+[travis-ci-badge]: https://img.shields.io/travis/spacedirectory/validator/master.svg
