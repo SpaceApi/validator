@@ -6,5 +6,5 @@ authors = ["Stefan Schindler <dns2utf8@estada.ch>"]
 [dependencies]
 nickel = "0.9"
 rustc-serialize = "0.3"
-spacedirectory-validator = { path = "../validator" }
 url = "1.0"
+spaceapi-validator = { path = "../validator" }

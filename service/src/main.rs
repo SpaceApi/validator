@@ -1,14 +1,14 @@
 #[macro_use] extern crate nickel;
 extern crate rustc_serialize;
-extern crate spacedirectory_validator;
 extern crate url;
+extern crate spaceapi_validator;
 
 use std::collections::BTreeMap;
 use nickel::status::StatusCode;
 use nickel::{Nickel, JsonBody, HttpRouter, MediaType};
 use rustc_serialize::json::{Json, ToJson, encode};
+use spaceapi_validator::{validate_spaceapi_json, ValicoError};
 
-use spacedirectory_validator::{validate_spaceapi_json, ValicoError};
 
 #[derive(RustcDecodable, RustcEncodable)]
 struct ValidationRequest {
@@ -100,7 +100,7 @@ fn set_headers(response: &mut nickel::Response) {
 }
 
 fn encode_missing(missing: &Vec<url::Url>) -> String {
-  let mut arr = missing.iter()
+  let arr = missing.iter()
                        .fold("".to_string(), |base, &ref element| {
                         format!("{}{}...",
                             if base.len() > 0 { "," } else { "" },
