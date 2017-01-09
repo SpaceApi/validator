@@ -2,6 +2,7 @@ extern crate valico;
 extern crate serde_json;
 
 use std::error::Error;
+pub use valico::common::error::ValicoError;
 
 use serde_json::{Value};
 use valico::json_schema;
