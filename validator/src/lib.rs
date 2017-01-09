@@ -48,4 +48,34 @@ mod tests {
         let validated = validate_spaceapi_json(obj);
         println!("{:?}", validated);
     }
+
+    #[test]
+    fn test_schema_0_8() {
+        let schema = get_schema("0.8");
+        assert!(schema.is_ok());
+    }
+
+    #[test]
+    fn test_schema_0_9() {
+        let schema = get_schema("0.9");
+        assert!(schema.is_ok());
+    }
+
+    #[test]
+    fn test_schema_0_11() {
+        let schema = get_schema("0.11");
+        assert!(schema.is_ok());
+    }
+
+    #[test]
+    fn test_schema_0_12() {
+        let schema = get_schema("0.12");
+        assert!(schema.is_ok());
+    }
+
+    #[test]
+    fn test_schema_0_13() {
+        let schema = get_schema("0.13");
+        assert!(schema.is_ok());
+    }
 }
