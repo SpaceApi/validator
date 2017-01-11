@@ -49,33 +49,19 @@ mod tests {
         println!("{:?}", validated);
     }
 
-    #[test]
-    fn test_schema_0_8() {
-        let schema = get_schema("0.8");
-        assert!(schema.is_ok());
+    macro_rules! test_schema {
+        ( $x:ident, $y:expr ) => {
+            #[test]
+            fn $x() {
+                let schema = get_schema($y);
+                assert!(schema.is_ok());
+            }
+        };
     }
 
-    #[test]
-    fn test_schema_0_9() {
-        let schema = get_schema("0.9");
-        assert!(schema.is_ok());
-    }
-
-    #[test]
-    fn test_schema_0_11() {
-        let schema = get_schema("0.11");
-        assert!(schema.is_ok());
-    }
-
-    #[test]
-    fn test_schema_0_12() {
-        let schema = get_schema("0.12");
-        assert!(schema.is_ok());
-    }
-
-    #[test]
-    fn test_schema_0_13() {
-        let schema = get_schema("0.13");
-        assert!(schema.is_ok());
-    }
+    test_schema!(test_schema_0_8, "0.8");
+    test_schema!(test_schema_0_9, "0.9");
+    test_schema!(test_schema_0_11, "0.11");
+    test_schema!(test_schema_0_12, "0.12");
+    test_schema!(test_schema_0_13, "0.13");
 }
