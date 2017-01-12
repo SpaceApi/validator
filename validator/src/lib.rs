@@ -48,4 +48,20 @@ mod tests {
         let validated = validate_spaceapi_json(obj);
         println!("{:?}", validated);
     }
+
+    macro_rules! test_schema {
+        ( $x:ident, $y:expr ) => {
+            #[test]
+            fn $x() {
+                let schema = get_schema($y);
+                assert!(schema.is_ok());
+            }
+        };
+    }
+
+    test_schema!(test_schema_0_8, "0.8");
+    test_schema!(test_schema_0_9, "0.9");
+    test_schema!(test_schema_0_11, "0.11");
+    test_schema!(test_schema_0_12, "0.12");
+    test_schema!(test_schema_0_13, "0.13");
 }
