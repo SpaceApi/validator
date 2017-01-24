@@ -1,7 +1,7 @@
 var Validator = (function() {
   'use strict';
   var validator_target = 'http://localhost:6767/';
-  var textarea_selector = '#content';
+  var textarea_selector = '#validator_content';
   var url_selector = '#version';
   var url_input = '#input_url';
   var submit_selector = '#submit_validate';
