@@ -11,3 +11,8 @@ script:
     cargo build &&
     cargo test &&
     cargo bench
+notification:
+  email:
+    on_success: never
+    on_failure: change
+    on_pull_request: false
