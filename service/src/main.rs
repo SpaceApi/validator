@@ -6,7 +6,7 @@ extern crate spaceapi_validator;
 use std::collections::BTreeMap;
 use nickel::status::StatusCode;
 use nickel::{Nickel, JsonBody, HttpRouter, MediaType};
-use rustc_serialize::json::{Json, ToJson, encode};
+use rustc_serialize::json::{encode};
 use spaceapi_validator::{validate_spaceapi_json, ValicoError};
 
 
