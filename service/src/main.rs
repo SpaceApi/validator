@@ -69,7 +69,6 @@ fn main() {
           },
         };
 
-        //format!("Hello {} {}", person.version, person.schema)
         response.set(MediaType::Json);
         encode(&result).unwrap()
     });
@@ -88,9 +87,11 @@ fn main() {
         "OK"
     });
 
+    // TODO hard coded
     server.listen("127.0.0.1:6767").unwrap();
 }
 
+/// set CORS header and disable Cache-Control
 fn set_headers(response: &mut nickel::Response) {
     response.headers_mut().set_raw("Access-Control-Allow-Origin", vec![b"*".to_vec()]);
     response.headers_mut().set_raw("Access-Control-Allow-Methods", vec![b"GET, POST, OPTIONS".to_vec()]);
