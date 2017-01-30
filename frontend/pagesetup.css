@@ -1,6 +1,4 @@
-html, body { font-family: "Oxygen Mono";
-       background: #f0f0f0;
-       background: linear-gradient(to bottom, rgba(225,232,252,1) 0%, rgba(242,242,242,1) 100%); }
+html, body { font-family: "Oxygen Mono"; background: #f0f0f0; background: linear-gradient(to bottom, rgba(225,232,252,1) 0%, rgba(242,242,242,1) 100%); }
 
 section { width: 100%; }
 
