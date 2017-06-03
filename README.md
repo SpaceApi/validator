@@ -23,6 +23,47 @@ You can now query the API using a HTTP client:
 
     http://localhost:6767/
 
+# API
+
+## Request
+
+To send a validation request, send a POST request to `/v1/validate/` with
+`Content-Type: application/json`. The payload (in JSON format) should look like
+this:
+
+```javascript
+{
+    "data": "..."
+}
+```
+
+The `data` field should contain the SpaceAPI endpoint data as a JSON string.
+
+## Response
+
+If the request is not malformed, the endpoint returns a HTTP 200 response with
+`Content-Type: application/json`.
+
+The success response looks like this:
+
+```javascript
+{
+    "valid": true,
+    "message": null
+}
+```
+
+The error response looks like this:
+
+```javascript
+{
+    "valid": false,
+    "message": "Error details"
+}
+```
+
+It is planned that more error details (like row/col) will be added in the future.
+
 # License
 
 Licensed under either of
