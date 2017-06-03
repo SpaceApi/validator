@@ -10,11 +10,11 @@ __version__ = '1.0.0'
 
 
 SCHEMATA = {
-    8: 'schema/8.json',
-    9: 'schema/9.json',
-    11: 'schema/11.json',
-    12: 'schema/12.json',
-    13: 'schema/13.json',
+    '0.8': 'schema/8.json',
+    '0.9': 'schema/9.json',
+    '0.11': 'schema/11.json',
+    '0.12': 'schema/12.json',
+    '0.13': 'schema/13.json',
 }
 
 
@@ -82,27 +82,27 @@ def index():
 
 @app.route('/v1/validate/', method=['POST', 'OPTIONS'])
 def validate():
-    data = request.json
+    try:
+        data = request.json
+    except json.JSONDecodeError:
+        abort(400, 'Request data is not valid JSON')  # TODO: regular response
 
     # Validate
-    if not data:
+    if data is None:
         abort(400, 'JSON payload missing')
-    if 'version' not in data:
-        abort(400, 'Payload does not contain a "version" field')
     if 'data' not in data:
         abort(400, 'Payload does not contain a "data" field')
-    try:
-        version = int(data['version'])
-    except ValueError:
-        abort(400, 'Invalid version "%s": Not an integer' % data['version'])
-    if version not in SCHEMATA:
-        abort(400, 'Unknown version: "%s"' % version)
     try:
         data = json.loads(data['data'])
     except json.JSONDecodeError:
         abort(400, 'Data is not valid JSON')  # TODO: regular response
+    if 'api' not in data:
+        abort(400, 'Data does not contain an "api" field')  # TODO: regular response
+    version = data['api']
+    if version not in SCHEMATA:
+        abort(400, 'Unknown api version: "%s"' % version)  # TODO: regular response
 
-    # Do validation
+    # Do validation of submitted endpoint
     try:
         valid, message = validation.validate(schema_path=SCHEMATA[version], data=data)
     except SchemaError:
