@@ -1,6 +1,7 @@
 import json
 
-from bottle import get, post, run, request, response, redirect, abort, error
+import bottle
+from bottle import request, response, redirect, abort, error
 from jsonschema.exceptions import SchemaError
 
 import validation
@@ -17,24 +18,60 @@ SCHEMATA = {
 }
 
 
+app = bottle.app()
+
+
+def _add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = \
+            'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+
+class EnableCors:
+    """
+    Set CORS headers.
+
+    Taken from https://stackoverflow.com/a/17262900/284318
+
+    """
+    name = 'enable_cors'
+    api = 2
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            _add_cors_headers(response)
+            if bottle.request.method != 'OPTIONS':
+                # Actual request (not a preflight)
+                # reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
+app.install(EnableCors())
+
+
 @error(400)
 def error400(error):
+    _add_cors_headers(response)
     response.set_header('Content-Type', 'application/json')
     return json.dumps({'detail': error.body})
 
 
 @error(404)
 def error404(error):
+    _add_cors_headers(response)
     response.set_header('Content-Type', 'application/json')
     return json.dumps({'detail': 'Page not found'})
 
 
-@get('/')
+@app.route('/', method=['GET', 'OPTIONS'])
 def root():
     redirect('/v1/')
 
 
-@get('/v1/')
+@app.route('/v1/', method=['GET', 'OPTIONS'])
 def index():
     return {
         'version': __version__,
@@ -43,7 +80,7 @@ def index():
     }
 
 
-@post('/v1/validate/')
+@app.route('/v1/validate/', method=['POST', 'OPTIONS'])
 def validate():
     data = request.json
 
@@ -77,4 +114,4 @@ def validate():
 
 
 if __name__ == '__main__':
-    run(host='127.0.0.1', port=6767)
+    app.run(host='127.0.0.1', port=6767)
