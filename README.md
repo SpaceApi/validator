@@ -14,19 +14,14 @@ Written in [Rust](https://rust-lang.org).
 
 # Test validator locally
 
-Start the frontend:
-
-    cd frontend
-    python -m http.server 8080
-
 Start the service:
 
     cd service
     cargo run
 
-Then open the page with your favorite browser:
+You can now query the API using a HTTP client:
 
-    http://localhost:8080/validator.html
+    http://localhost:6767/
 
 # License
 
