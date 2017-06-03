@@ -1,4 +1,9 @@
 import json
+try:
+    from json import JSONDecodeError
+except ImportError:
+    # Python <3.5 compat
+    JSONDecodeError = ValueError
 
 import bottle
 from bottle import request, response, redirect, abort, error
@@ -91,7 +96,7 @@ def index():
 def validate():
     try:
         data = request.json
-    except json.JSONDecodeError:
+    except JSONDecodeError:
         abort(400, 'Request data is not valid JSON')
 
     # Validate
@@ -101,7 +106,7 @@ def validate():
         abort(400, 'Payload does not contain a "data" field')
     try:
         data = json.loads(data['data'])
-    except json.JSONDecodeError:
+    except JSONDecodeError:
         return invalid_payload('Data is not valid JSON')
     if 'api' not in data:
         return invalid_payload('Data does not contain an "api" field')
