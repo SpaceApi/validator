@@ -1,16 +1,13 @@
 sudo: false
-language: rust
-rust:
-  - stable
-env:
-  - CRATE=service
-  - CRATE=validator
-script:
-  - |
-    cd $CRATE &&
-    cargo build &&
-    cargo test &&
-    cargo bench
+language: python
+python:
+  - 3.4
+  - 3.5
+  - 3.6
+install:
+  - pip install -r validator/requirements.txt
+  - pip install -r validator/requirements-dev.txt
+script: cd validator && py.test
 notification:
   email:
     on_success: never
