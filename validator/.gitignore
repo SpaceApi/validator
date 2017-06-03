@@ -1,1 +1,3 @@
 Cargo.lock
+*.pyc
+__pycache__
