@@ -1,27 +1,31 @@
 # Validation server for SpaceAPI endpoints
 
-Written in [Rust](https://rust-lang.org).
+Written in Python 3 with [Bottle](http://bottlepy.org/).
 
 [![Travis CI][travis-ci-badge]][travis-ci]
 
-# How to build?
+# Dev setup
 
-    git submodule init
-    git submodule update
+Change into validator directory:
 
-    cd service
-    cargo build
+    cd validator
 
-# Test validator locally
+Create a virtual environment:
 
-Start the service:
+    python3 -m venv VIRTUAL
 
-    cd service
-    cargo run
+Enable virtualenv:
 
-You can now query the API using a HTTP client:
+    source VIRTUAL/bin/activate
 
-    http://localhost:6767/
+Install dependencies:
+
+    pip install -r requirements.txt
+    pip install -r requirements-dev.txt
+
+Start the server:
+
+    python service.py
 
 # API
 
