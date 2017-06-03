@@ -1,12 +1,7 @@
-html, body { font-family: "Oxygen Mono";
-       background: #f0f0f0;
-       background: linear-gradient(to bottom, rgba(225,232,252,1) 0%, rgba(242,242,242,1) 100%); }
-
-section { width: 100%; }
-
-h1 > a > img { height: 1em; }
 
 textarea { width: 100%; min-height: 340px; }
+
+iframe { width: 100%; min-height: 23vh; border: 2px solid #555; }
 
 
 .centering { display: flex; justify-content: center; align-items: center; flex-direction: column; }
@@ -20,13 +15,3 @@ textarea { width: 100%; min-height: 340px; }
 
 #log { overflow-x: scroll; }
 
-
-@font-face {
-  font-family: 'Oxygen Mono';
-  src: local('Oxygen Mono'), url('oxygen-mono-regular.woff'), url('oxygen-mono-regular.ttf');
-}
-
-@media (min-width: 700px) {
-  section { width: 60%; padding: 42px 20%; min-height: 42vh; }
-  img { max-width: 700px; }
-}

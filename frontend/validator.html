@@ -2,6 +2,7 @@
   <head>
     <meta charset="utf-8">
     <title>SpaceAPI endpoint validator</title>
+    <link rel="stylesheet" href="pagesetup.css">
     <link rel="stylesheet" href="validator.css">
   </head>
   <body>
@@ -20,21 +21,28 @@
         </p>
 
         <p>Paste your output here:</p>
-        <textarea id="content"></textarea>
+        <textarea id="validator_content"></textarea>
         <input id="submit_validate" type="submit" value="Validate">
       </form>
 
       <div id="banner">
-        <div id="OK">OK</div>
-        <div id="ERROR">ERROR</div>
-        <div id="processing">Processing request, please hold ...</div>
-        <div id="fetching">Fetching data, please hold ...</div>
+        <!-- Capital letter: originates from validator service -->
+        <pre id="OK">OK</pre>
+        <pre id="ERROR">ERROR</pre>
+        <pre id="processing">Processing request, please hold ...</pre>
+        <pre id="fetching">Fetching data, please hold ...</pre>
       </div>
 
-      <p>
+      <div>
         <h2>Log</h2>
         <pre id="log"></pre>
-      </p>
+      </div>
+
+      <div id="backup_iframe">
+        <h2>Backup iFrame</h2>
+        <p>iFrame points to: <pre></pre></p>
+        <iframe src="#">This is the backup iFrame</iframe>
+      </div>
     </section>
     <script src="validator.js"></script>
   </body>
