@@ -66,6 +66,13 @@ def error404(error):
     return json.dumps({'detail': 'Page not found'})
 
 
+def invalid_payload(message: str) -> dict:
+    """
+    Return a response body indicating that the validation was not successful.
+    """
+    return {'valid': False, 'message': message}
+
+
 @app.route('/', method=['GET', 'OPTIONS'])
 def root():
     redirect('/v1/')
@@ -85,7 +92,7 @@ def validate():
     try:
         data = request.json
     except json.JSONDecodeError:
-        abort(400, 'Request data is not valid JSON')  # TODO: regular response
+        abort(400, 'Request data is not valid JSON')
 
     # Validate
     if data is None:
@@ -95,12 +102,12 @@ def validate():
     try:
         data = json.loads(data['data'])
     except json.JSONDecodeError:
-        abort(400, 'Data is not valid JSON')  # TODO: regular response
+        return invalid_payload('Data is not valid JSON')
     if 'api' not in data:
-        abort(400, 'Data does not contain an "api" field')  # TODO: regular response
+        return invalid_payload('Data does not contain an "api" field')
     version = data['api']
     if version not in SCHEMATA:
-        abort(400, 'Unknown api version: "%s"' % version)  # TODO: regular response
+        return invalid_payload('Unknown api version: "%s"' % version)
 
     # Do validation of submitted endpoint
     try:

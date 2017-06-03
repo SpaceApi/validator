@@ -1,0 +1,22 @@
+{
+    "api": "0.13",
+    "space": "coredump",
+    "location": {
+        "address": "Zürcherstrasse 6, 8640 Rapperswil, Switzerland",
+        "lat": 47.22939,
+        "lon": 8.82041
+    },
+    "state": {
+        "message": "Open Mondays from 20:00",
+        "open": false
+    },
+    "contact": {
+        "email": "vorstand@lists.coredump.ch",
+        "irc": "irc://freenode.net/#coredump",
+        "twitter": "@coredump_ch"
+    },
+    "issue_report_channels": [
+        "email",
+        "twitter"
+    ]
+}
