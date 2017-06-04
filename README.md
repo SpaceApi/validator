@@ -6,10 +6,6 @@ Written in Python 3 with [Bottle](http://bottlepy.org/).
 
 # Dev setup
 
-Change into validator directory:
-
-    cd validator
-
 Create a virtual environment:
 
     python3 -m venv VIRTUAL
@@ -25,6 +21,7 @@ Install dependencies:
 
 Start the server:
 
+    cd validator
     python service.py
 
 # API
