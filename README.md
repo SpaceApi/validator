@@ -22,7 +22,7 @@ Install dependencies:
 Start the server:
 
     cd validator
-    python service.py
+    python server.py
 
 # API
 

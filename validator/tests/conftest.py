@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from service import app
+from server import app
 
 
 @pytest.fixture(scope='module')
