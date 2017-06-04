@@ -1,27 +1,69 @@
 # Validation server for SpaceAPI endpoints
 
-Written in [Rust](https://rust-lang.org).
+Written in Python 3 with [Bottle](http://bottlepy.org/).
 
 [![Travis CI][travis-ci-badge]][travis-ci]
 
-# How to build?
+# Dev setup
 
-    git submodule init
-    git submodule update
+Create a virtual environment:
 
-    cd service
-    cargo build
+    python3 -m venv VIRTUAL
 
-# Test validator locally
+Enable virtualenv:
 
-Start the service:
+    source VIRTUAL/bin/activate
 
-    cd service
-    cargo run
+Install dependencies:
 
-You can now query the API using a HTTP client:
+    pip install -r requirements.txt
+    pip install -r requirements-dev.txt
 
-    http://localhost:6767/
+Start the server:
+
+    cd validator
+    python server.py
+
+# API
+
+## Request
+
+To send a validation request, send a POST request to `/v1/validate/` with
+`Content-Type: application/json`. The payload (in JSON format) should look like
+this:
+
+```javascript
+{
+    "data": "..."
+}
+```
+
+The `data` field should contain the SpaceAPI endpoint data as a JSON string.
+
+## Response
+
+If the request is not malformed, the endpoint returns a HTTP 200 response with
+`Content-Type: application/json`.
+
+The success response looks like this:
+
+```javascript
+{
+    "valid": true,
+    "message": null
+}
+```
+
+The error response looks like this:
+
+```javascript
+{
+    "valid": false,
+    "message": "Error details"
+}
+```
+
+It is planned that more error details (like row/col) will be added in the future.
 
 # License
 
