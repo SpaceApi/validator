@@ -2,6 +2,8 @@
 
 Written in Python 3 with [Bottle](http://bottlepy.org/).
 
+https://validator.spacedirectory.org/v1/
+
 [![Travis CI][travis-ci-badge]][travis-ci]
 
 # Dev setup
