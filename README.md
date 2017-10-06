@@ -6,7 +6,10 @@ https://validator.spacedirectory.org/v1/
 
 [![Travis CI][travis-ci-badge]][travis-ci]
 
+
 # Dev setup
+
+## Dependencies
 
 Create a virtual environment:
 
@@ -21,10 +24,20 @@ Install dependencies:
     pip install -r requirements.txt
     pip install -r requirements-dev.txt
 
+## Starting the Server
+
 Start the server:
 
     cd validator
     python server.py
+
+## Testing
+
+To run tests:
+
+    cd validator
+    py.test -v
+
 
 # API
 
@@ -66,6 +79,7 @@ The error response looks like this:
 ```
 
 It is planned that more error details (like row/col) will be added in the future.
+
 
 # License
 
