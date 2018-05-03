@@ -11,18 +11,17 @@ https://validator.spacedirectory.org/v1/
 
 ## Dependencies
 
-Create a virtual environment:
+Install Python 3 and [pipenv](https://github.com/pypa/pipenv).
 
-    python3 -m venv VIRTUAL
+Then:
 
-Enable virtualenv:
+    pipenv install --dev
 
-    source VIRTUAL/bin/activate
+Enable env:
 
-Install dependencies:
+    pipenv shell
 
-    pip install -r requirements.txt
-    pip install -r requirements-dev.txt
+(Or prefix every Python command with `pipenv run`.)
 
 ## Starting the Server
 
