@@ -55,6 +55,20 @@ this:
 
 The `data` field should contain the SpaceAPI endpoint data as a JSON string.
 
+Example (curl):
+
+    curl \
+        -X POST \
+        -H "Content-Type: application/json" \
+        https://validator.spacedirectory.org/v1/validate/ \
+        -d'{"data": "{\"api\": \"0.13\"}"}'
+
+Example (httpie):
+
+    http POST \
+        https://validator.spacedirectory.org/v1/validate/ \
+        data='{"api": "0.13"}'
+
 ## Response
 
 If the request is not malformed, the endpoint returns a HTTP 200 response with
