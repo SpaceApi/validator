@@ -95,17 +95,21 @@ def index():
 @app.route('/v1/validate/', method=['POST', 'OPTIONS'])
 def validate():
     try:
-        data = request.json
+        payload = request.json
     except JSONDecodeError:
         abort(400, 'Request data is not valid JSON')
 
-    # Validate
-    if data is None:
+    # Validate payload format
+    if payload is None:
         abort(400, 'JSON payload missing')
-    if 'data' not in data:
+    if not isinstance(payload, dict):
+        abort(400, 'Payload must be a JSON object')
+    if 'data' not in payload:
         abort(400, 'Payload does not contain a "data" field')
+
+    # Validate payload data
     try:
-        data = json.loads(data['data'])
+        data = json.loads(payload['data'])
     except JSONDecodeError:
         return invalid_payload('Data is not valid JSON')
     if 'api' not in data:

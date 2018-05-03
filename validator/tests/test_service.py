@@ -6,7 +6,7 @@ import requests
 
 @pytest.mark.parametrize(['data', 'errormsg'], [
     (None, 'JSON payload missing'),
-    ('[]', 'Payload does not contain a "data" field'),
+    ('42', 'Payload must be a JSON object'),
     ('{}', 'Payload does not contain a "data" field'),
     ('asfd', 'Request data is not valid JSON'),
 ])
