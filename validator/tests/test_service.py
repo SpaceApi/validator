@@ -29,42 +29,52 @@ def test_validate_valid(testserver):
     assert r.json()['message'] is None
 
 
-def test_validate_malformed(testserver):
-    data = 'asdf'
+@pytest.mark.parametrize(['data', 'errormsg'], [
+    ('asdf', 'Data is not valid JSON'),
+    ('42', 'Data must be a JSON object'),
+])
+def test_validate_malformed(testserver, data, errormsg):
     r = requests.post(testserver + 'v1/validate/',
             json={'data': data},
             headers={'Content-type': 'application/json'})
     assert r.status_code == 200, (r.status_code, r.content)
     assert r.json()['valid'] is False
-    assert r.json()['message'] == 'Data is not valid JSON'
+    assert r.json()['message'] == errormsg
+
+
+def _ensure_invalid(testserver, data, status_code: int, message: str):
+    r = requests.post(testserver + 'v1/validate/',
+            json={'data': data},
+            headers={'Content-type': 'application/json'})
+    assert r.status_code == status_code, (r.status_code, r.content)
+    assert r.json()['valid'] is False
+    assert r.json()['message'] == message
 
 
 def test_validate_invalid_missing_api_version(testserver):
-    data = json.dumps({'a': 'b'})
-    r = requests.post(testserver + 'v1/validate/',
-            json={'data': data},
-            headers={'Content-type': 'application/json'})
-    assert r.status_code == 200, (r.status_code, r.content)
-    assert r.json()['valid'] is False
-    assert r.json()['message'] == 'Data does not contain an "api" field'
+    _ensure_invalid(
+        testserver,
+        json.dumps({'a': 'b'}),
+        200,
+        'Data does not contain an "api" field',
+    )
 
 
 def test_validate_invalid_unknown_api_version(testserver):
-    data = json.dumps({'api': '0.4'})
-    r = requests.post(testserver + 'v1/validate/',
-            json={'data': data},
-            headers={'Content-type': 'application/json'})
-    assert r.status_code == 200, (r.status_code, r.content)
-    assert r.json()['valid'] is False
-    assert r.json()['message'] == 'Unknown api version: "0.4"'
+    _ensure_invalid(
+        testserver,
+        json.dumps({'api': '0.4'}),
+        200,
+        'Unknown api version: "0.4"',
+    )
 
 
 def test_validate_invalid_missing_fields(testserver):
     with open('tests/data/missing_url_logo.json', 'r') as f:
         data = f.read()
-    r = requests.post(testserver + 'v1/validate/',
-            json={'data': data},
-            headers={'Content-type': 'application/json'})
-    assert r.status_code == 200, (r.status_code, r.content)
-    assert r.json()['valid'] is False
-    assert r.json()['message'] == '\'logo\' is a required property'
+        _ensure_invalid(
+            testserver,
+            data,
+            200,
+            '\'logo\' is a required property',
+        )

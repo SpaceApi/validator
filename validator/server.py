@@ -112,6 +112,8 @@ def validate():
         data = json.loads(payload['data'])
     except JSONDecodeError:
         return invalid_payload('Data is not valid JSON')
+    if not isinstance(data, dict):
+        return invalid_payload('Data must be a JSON object')
     if 'api' not in data:
         return invalid_payload('Data does not contain an "api" field')
     version = data['api']
