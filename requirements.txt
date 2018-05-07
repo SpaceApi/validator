@@ -1,2 +1,0 @@
-bottle==0.12.13
-jsonschema==2.6.0
