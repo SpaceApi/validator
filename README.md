@@ -112,5 +112,5 @@ for inclusion in the work by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 
 <!-- Badges -->
-[travis-ci]: https://travis-ci.org/spacedirectory/validator
-[travis-ci-badge]: https://img.shields.io/travis/spacedirectory/validator/master.svg
+[travis-ci]: https://travis-ci.org/SpaceApi/validator
+[travis-ci-badge]: https://img.shields.io/travis/SpaceApi/validator/master.svg

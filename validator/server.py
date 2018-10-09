@@ -89,7 +89,7 @@ def index():
         'version': __version__,
         'description': 'Space API Validator API',
         'usage': 'Send a POST request in JSON format to /v1/validate/. '
-                 'See https://github.com/spacedirectory/validator for more information.',
+                 'See https://github.com/SpaceApi/validator for more information.',
     }
 
 
