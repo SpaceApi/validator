@@ -1,0 +1,61 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install pip dependencies
+          command: pipenv install --dev
+      - run:
+          name: Run tests
+          command: cd validator && pipenv run pytest
+  build:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            docker build \
+              --no-cache \
+              -t spaceapi/validator:latest \
+              -t spaceapi/validator:${CIRCLE_BRANCH} \
+              .
+      - deploy:
+          name: Push Docker image
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_API_KEY && \
+            docker push spaceapi/validator
+workflows:
+  version: 2
+
+  # Build on push to master
+  on_push:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+
+  # Build every week on Monday at 05:00 am
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 5 * * 1"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - test
+      - build:
+          requires:
+            - test

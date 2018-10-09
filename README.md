@@ -2,9 +2,10 @@
 
 Written in Python 3 with [Bottle](http://bottlepy.org/).
 
-https://validator.spacedirectory.org/v1/
+https://validator.spaceapi.io/v1/
 
-[![Travis CI][travis-ci-badge]][travis-ci]
+[![CircleCI][circle-ci-badge]][circle-ci]
+[![Docker Image][docker-image-badge]][docker-image]
 
 
 # Dev setup
@@ -59,13 +60,13 @@ Example (curl):
     curl \
         -X POST \
         -H "Content-Type: application/json" \
-        https://validator.spacedirectory.org/v1/validate/ \
+        https://validator.spaceapi.io/v1/validate/ \
         -d'{"data": "{\"api\": \"0.13\"}"}'
 
 Example (httpie):
 
     http POST \
-        https://validator.spacedirectory.org/v1/validate/ \
+        https://validator.spaceapi.io/v1/validate/ \
         data='{"api": "0.13"}'
 
 ## Response
@@ -111,6 +112,9 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall
 be dual licensed as above, without any additional terms or conditions.
 
+
 <!-- Badges -->
-[travis-ci]: https://travis-ci.org/SpaceApi/validator
-[travis-ci-badge]: https://img.shields.io/travis/SpaceApi/validator/master.svg
+[circle-ci]: https://circleci.com/gh/SpaceApi/validator/tree/master
+[circle-ci-badge]: https://circleci.com/gh/SpaceApi/validator/tree/master.svg?style=shield
+[docker-image]: https://hub.docker.com/r/spaceapi/validator/
+[docker-image-badge]: https://img.shields.io/docker/pulls/spaceapi/validator.svg

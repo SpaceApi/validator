@@ -4,6 +4,7 @@ try:
 except ImportError:
     # Python <3.5 compat
     JSONDecodeError = ValueError
+import os
 
 import bottle
 from bottle import request, response, redirect, abort, error
@@ -133,4 +134,6 @@ def validate():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=6767)
+    host = os.environ.get('HOST', '127.0.0.1')
+    port = int(os.environ.get('PORT', '6767'))
+    app.run(host=host, port=port)
