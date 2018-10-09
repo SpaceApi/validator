@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Install pip dependencies
-          command: pipenv install --dev
+          command: pip install pipenv && pipenv install --dev
       - run:
           name: Run tests
           command: cd validator && pipenv run pytest
