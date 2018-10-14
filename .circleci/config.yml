@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run:
           name: Clone submodules
-          command: git submodule update --init --recursive
+          command: apk add git && git submodule update --init --recursive
       - setup_remote_docker
       - run:
           name: Build Docker image
