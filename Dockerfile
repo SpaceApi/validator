@@ -13,6 +13,6 @@ RUN cd /code && pipenv install
 
 # Service
 WORKDIR /code/validator
-ENV HOST=0.0.0.0 PORT=80
+ENV HOST=0.0.0.0 PORT=80 PYTHONUNBUFFERED=yes
 EXPOSE 80
-CMD ["/usr/local/bin/pipenv", "run", "python", "server.py"]
+CMD ["/usr/local/bin/pipenv", "run", "python", "-u", "server.py"]
