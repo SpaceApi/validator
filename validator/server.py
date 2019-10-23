@@ -7,7 +7,7 @@ except ImportError:
 import os
 
 import bottle
-from bottle import request, response, redirect, abort, error
+from bottle import request, response, redirect, abort, error, static_file
 from jsonschema.exceptions import SchemaError
 
 import validation
@@ -82,6 +82,11 @@ def invalid_payload(message: str) -> dict:
 @app.route('/', method=['GET', 'OPTIONS'])
 def root():
     redirect('/v1/')
+
+
+@app.route("/openapi.json", method=['GET', 'OPTIONS'])
+def openapi():
+    return static_file("openapi.json", root="./")
 
 
 @app.route('/v1/', method=['GET', 'OPTIONS'])
