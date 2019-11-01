@@ -23,7 +23,8 @@ type validationResponse struct {
 	Message string `json:"message"`
 }
 
-func GetValidatorV1Mux() *goji.Mux {
+// GetSubMux returns the versions subrouter
+func GetSubMux() *goji.Mux {
 	v1 := goji.SubMux()
 	v1.HandleFunc(pat.Get("/"), info)
 	v1.HandleFunc(pat.Post("/validate"), validate)

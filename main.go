@@ -19,10 +19,10 @@ func main() {
 	root.Use(c.Handler)
 
 	root.HandleFunc(pat.Get("/"), versionRedirect)
-	root.HandleFunc(pat.Get("/openapi.json"), openApi)
+	root.HandleFunc(pat.Get("/openapi.json"), openAPI)
 
-	root.Handle(pat.New("/v1/*"), v1.GetValidatorV1Mux())
-	root.Handle(pat.New("/v2/*"), v2.GetValidatorV2Mux())
+	root.Handle(pat.New("/v1/*"), v1.GetSubMux())
+	root.Handle(pat.New("/v2/*"), v2.GetSubMux())
 
 	log.Println("starting validator...")
 	log.Fatal(http.ListenAndServe(":8080", root))
@@ -32,6 +32,6 @@ func versionRedirect(writer http.ResponseWriter, request *http.Request) {
 	http.Redirect(writer, request, "/v1", 302)
 }
 
-func openApi(writer http.ResponseWriter, request *http.Request) {
+func openAPI(writer http.ResponseWriter, request *http.Request) {
 	_, _ = writer.Write([]byte(openapi))
 }

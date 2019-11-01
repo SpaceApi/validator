@@ -31,32 +31,32 @@ var validSpace = `{
 
 var invalidSpace = `{ "data": "asd" }`
 
-func forgeValidateJsonRequest(t *testing.T, body io.Reader) (error, *httptest.ResponseRecorder) {
-	req, err := http.NewRequest("POST", "/v2/validateJson", body)
+func forgeValidateJSONRequest(t *testing.T, body io.Reader) *httptest.ResponseRecorder {
+	req, err := http.NewRequest("POST", "/v2/validateJSON", body)
 	if err != nil {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(validateJson)
+	handler := http.HandlerFunc(validateJSON)
 	handler.ServeHTTP(rr, req)
-	return err, rr
+	return rr
 }
 
-func forgeValidateUrlRequest(t *testing.T, body io.Reader) (error, *httptest.ResponseRecorder) {
-	req, err := http.NewRequest("POST", "/v2/validateUrl", body)
+func forgeValidateURLRequest(t *testing.T, body io.Reader) *httptest.ResponseRecorder {
+	req, err := http.NewRequest("POST", "/v2/validateURL", body)
 	if err != nil {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(validateUrl)
+	handler := http.HandlerFunc(validateURL)
 	handler.ServeHTTP(rr, req)
-	return err, rr
+	return rr
 }
 
 //// VALIDATE JSON ////
 
 func TestValidateJsonWithValid(t *testing.T) {
-	err, rr := forgeValidateJsonRequest(t, strings.NewReader(validSpace))
+	rr := forgeValidateJSONRequest(t, strings.NewReader(validSpace))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -64,7 +64,7 @@ func TestValidateJsonWithValid(t *testing.T) {
 	}
 
 	resp := jsonValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -76,7 +76,7 @@ func TestValidateJsonWithValid(t *testing.T) {
 }
 
 func TestValidateJsonWithInvalid(t *testing.T) {
-	err, rr := forgeValidateJsonRequest(t, strings.NewReader(invalidSpace))
+	rr := forgeValidateJSONRequest(t, strings.NewReader(invalidSpace))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -84,7 +84,7 @@ func TestValidateJsonWithInvalid(t *testing.T) {
 	}
 
 	resp := jsonValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,7 +96,7 @@ func TestValidateJsonWithInvalid(t *testing.T) {
 }
 
 func TestValidateJsonWithInvalidJson(t *testing.T) {
-	_, rr := forgeValidateJsonRequest(t, strings.NewReader("foo"))
+	rr := forgeValidateJSONRequest(t, strings.NewReader("foo"))
 
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -105,7 +105,7 @@ func TestValidateJsonWithInvalidJson(t *testing.T) {
 }
 
 func TestValidateJsonWithEmptyBody(t *testing.T) {
-	_, rr := forgeValidateJsonRequest(t, nil)
+	rr := forgeValidateJSONRequest(t, nil)
 
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -122,7 +122,7 @@ func TestValidateUrlWithValid(t *testing.T) {
 		}))
 	defer ts.Close()
 
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -130,7 +130,7 @@ func TestValidateUrlWithValid(t *testing.T) {
 	}
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -142,7 +142,7 @@ func TestValidateUrlWithValid(t *testing.T) {
 }
 
 func TestValidateUrlWithUnreachablePath(t *testing.T) {
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "https://example.com/status.json" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "https://example.com/status.json" }`))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -150,7 +150,7 @@ func TestValidateUrlWithUnreachablePath(t *testing.T) {
 	}
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -167,7 +167,7 @@ func TestValidateUrlWithUnreachablePath(t *testing.T) {
 }
 
 func TestValidateUrlWithUnreachableServer(t *testing.T) {
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "http://localhost:666/status.json" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "http://localhost:666/status.json" }`))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -175,7 +175,7 @@ func TestValidateUrlWithUnreachableServer(t *testing.T) {
 	}
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -192,7 +192,7 @@ func TestValidateUrlWithUnreachableServer(t *testing.T) {
 }
 
 func TestValidateUrlWithEmptyBody(t *testing.T) {
-	_, rr := forgeValidateUrlRequest(t, nil)
+	rr := forgeValidateURLRequest(t, nil)
 
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -201,7 +201,7 @@ func TestValidateUrlWithEmptyBody(t *testing.T) {
 }
 
 func TestValidateUrlWithEmptyStringBody(t *testing.T) {
-	_, rr := forgeValidateUrlRequest(t, strings.NewReader(""))
+	rr := forgeValidateURLRequest(t, strings.NewReader(""))
 
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -210,7 +210,7 @@ func TestValidateUrlWithEmptyStringBody(t *testing.T) {
 }
 
 func TestValidateUrlWithInvalidBody(t *testing.T) {
-	_, rr := forgeValidateUrlRequest(t, strings.NewReader(`{}`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{}`))
 
 	if status := rr.Code; status != http.StatusBadRequest {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -227,10 +227,10 @@ func TestValidateUrlCors(t *testing.T) {
 		}))
 	defer ts.Close()
 
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -253,10 +253,10 @@ func TestValidateUrlCorsFalse(t *testing.T) {
 		}))
 	defer ts.Close()
 
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -278,10 +278,10 @@ func TestValidateUrlInvalidSpace(t *testing.T) {
 		}))
 	defer ts.Close()
 
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -303,7 +303,7 @@ func TestValidateUrlInvalidTls(t *testing.T) {
 		}))
 	defer ts.Close()
 
-	err, rr := forgeValidateUrlRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
+	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -311,14 +311,14 @@ func TestValidateUrlInvalidTls(t *testing.T) {
 	}
 
 	resp := urlValidationResponse{}
-	err = json.NewDecoder(rr.Body).Decode(&resp)
+	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if resp.IsHttps != true {
+	if resp.IsHTTPS != true {
 		t.Errorf("https check failed: got %v want %v",
-			resp.IsHttps, true)
+			resp.IsHTTPS, true)
 	}
 
 	if resp.CertValid != false {

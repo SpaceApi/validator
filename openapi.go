@@ -105,7 +105,7 @@ var openapi = `{
         }
       }
     },
-    "/v2/validateUrl": {
+    "/v2/validateURL": {
       "post": {
         "tags": [
           "v2"
@@ -181,7 +181,7 @@ var openapi = `{
         }
       }
     },
-    "/v2/validateJson": {
+    "/v2/validateJSON": {
       "post": {
         "tags": [
           "v2"
