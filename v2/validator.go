@@ -31,11 +31,18 @@ type urlValidationResponse struct {
 	Cors         bool   `json:"cors"`
 	ContentType  bool   `json:"contentType"`
 	CertValid    bool   `json:"certValid"`
+	SchemaErrors	[]schemaError	`json:"schemaErrors,omitempty"`
+}
+
+type schemaError struct {
+	Field	string	`json:"field"`
+	Message	string	`json:"message"`
 }
 
 type jsonValidationResponse struct {
 	Valid   bool   `json:"valid"`
 	Message string `json:"message"`
+	SchemaErrors	[]schemaError	`json:"schemaErrors,omitempty"`
 }
 
 func GetValidatorV2Mux() *goji.Mux {
@@ -113,6 +120,10 @@ func validateUrl(writer http.ResponseWriter, request *http.Request) {
 	var errMsg string
 	for _, validatorError := range res.Errors {
 		errMsg = errMsg + validatorError.Context + ": " + validatorError.Description + "\n"
+		valRes.SchemaErrors = append(valRes.SchemaErrors, schemaError{
+			Field:   validatorError.Context,
+			Message: validatorError.Description,
+		})
 	}
 	valRes.Message = errMsg
 
@@ -196,15 +207,20 @@ func validateJson(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	resp := jsonValidationResponse{
+		Valid:   res.Valid,
+	}
+
 	var errMsg string
 	for _, validatorError := range res.Errors {
 		errMsg = errMsg + validatorError.Context + ": " + validatorError.Description + "\n"
+		resp.SchemaErrors = append(resp.SchemaErrors, schemaError{
+			Field:   validatorError.Context,
+			Message: validatorError.Description,
+		})
 	}
 
-	resp := jsonValidationResponse{
-		Valid:   res.Valid,
-		Message: errMsg,
-	}
+	resp.Message = errMsg
 
 	writer.Header().Add("Content-Type", "application/json")
 	err = json.NewEncoder(writer).Encode(resp)
