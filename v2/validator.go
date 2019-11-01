@@ -204,7 +204,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		return nil, "", nil
 	}
 
-	bodyArray, err := ioutil.ReadAll(response.Body)
+	bodyArray, _ := ioutil.ReadAll(response.Body)
 	validationResponse.Reachable = true
 	validationResponse.CertValid = (validationResponse.IsHTTPS || validationResponse.HTTPSForward) && !skipVerify
 	return response.Header, string(bodyArray), nil
