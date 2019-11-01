@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: go test
+          command: go test ./...
   build:
     docker:
       - image: docker:stable
