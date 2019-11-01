@@ -4,6 +4,7 @@ https://validator.spaceapi.io/v2/
 
 [![CircleCI][circle-ci-badge]][circle-ci]
 [![Docker Image][docker-image-badge]][docker-image]
+[![Go Report Card][go-report-card-badge]][go-report-card]
 
 
 # Dev setup
@@ -111,3 +112,5 @@ be dual licensed as above, without any additional terms or conditions.
 [circle-ci-badge]: https://circleci.com/gh/SpaceApi/validator/tree/master.svg?style=shield
 [docker-image]: https://hub.docker.com/r/spaceapi/validator/
 [docker-image-badge]: https://img.shields.io/docker/pulls/spaceapi/validator.svg
+[go-report-card]: https://goreportcard.com/report/github.com/spaceapi/validator
+[go-report-card-badge]: https://goreportcard.com/badge/github.com/spaceapi/validator

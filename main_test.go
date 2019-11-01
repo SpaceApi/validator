@@ -35,7 +35,7 @@ func TestOpenApi(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(openApi)
+	handler := http.HandlerFunc(openAPI)
 	handler.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusOK {
