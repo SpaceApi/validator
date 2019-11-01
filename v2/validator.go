@@ -6,6 +6,7 @@ import (
 	spaceapivalidator "github.com/spaceapi-community/go-spaceapi-validator"
 	"goji.io"
 	"goji.io/pat"
+	"golang.org/x/time/rate"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -46,11 +47,29 @@ type jsonValidationResponse struct {
 	SchemaErrors	[]schemaError	`json:"schemaErrors,omitempty"`
 }
 
+
+func limit(next http.Handler, limiter *rate.Limiter) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if limiter.Allow() == false {
+			http.Error(w, http.StatusText(429), http.StatusTooManyRequests)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func GetValidatorV2Mux() *goji.Mux {
 	v2 := goji.SubMux()
 	v2.HandleFunc(pat.Get("/"), info)
 	v2.HandleFunc(pat.Post("/validateJson"), validateJson)
-	v2.HandleFunc(pat.Post("/validateUrl"), validateUrl)
+	v2.Handle(
+		pat.Post("/validateUrl"),
+		limit(
+			http.HandlerFunc(validateUrl),
+			rate.NewLimiter(10, 25),
+		),
+	)
 
 	return v2
 }
