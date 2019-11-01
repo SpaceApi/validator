@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -141,7 +142,7 @@ func checkHeader(response *urlValidationResponse, header http.Header) {
 		response.Cors = true
 	}
 
-	if header.Get("Content-Type") == "application/json" {
+	if strings.HasPrefix(header.Get("Content-Type"), "application/json") {
 		response.ContentType = true
 	}
 }

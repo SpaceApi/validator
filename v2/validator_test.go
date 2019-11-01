@@ -222,7 +222,7 @@ func TestValidateUrlCors(t *testing.T) {
 	ts := httptest.NewServer(
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Add("Access-Control-Allow-Origin", "*")
-			w.Header().Add("Content-Type", "application/json")
+			w.Header().Add("Content-Type", "application/json; charset=UTF-8")
 			_, _ = w.Write([]byte(validSpace))
 		}))
 	defer ts.Close()
