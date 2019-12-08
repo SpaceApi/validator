@@ -27,19 +27,19 @@ type validationResponse struct {
 func GetSubMux() *goji.Mux {
 	v1 := goji.SubMux()
 	v1.HandleFunc(pat.Get("/"), info)
-	v1.HandleFunc(pat.Post("/validate"), validate)
+	v1.HandleFunc(pat.Post("/validate/"), validate)
 
-	v1.HandleFunc(pat.Get("/validate"), func(writer http.ResponseWriter, _ *http.Request) {
+	v1.HandleFunc(pat.Get("/validate/"), func(writer http.ResponseWriter, _ *http.Request) {
 		writer.WriteHeader(405)
 	})
-	v1.HandleFunc(pat.Get("/validate/"), forwardToValidate)
-	v1.HandleFunc(pat.Post("/validate/"), forwardToValidate)
+	v1.HandleFunc(pat.Get("/validate"), forwardToValidate)
+	v1.HandleFunc(pat.Post("/validate"), forwardToValidate)
 
 	return v1
 }
 
 func forwardToValidate(writer http.ResponseWriter, request *http.Request) {
-	http.Redirect(writer, request, "/v1/validate", 302)
+	http.Redirect(writer, request, "/v1/validate/", 302)
 }
 
 func info(writer http.ResponseWriter, request *http.Request) {
