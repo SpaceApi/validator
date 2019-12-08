@@ -46,7 +46,7 @@ func info(writer http.ResponseWriter, request *http.Request) {
 	serverInfo := serverInfo{
 		Description: "Space API Validator API",
 		Usage:       "Send a POST request in JSON format to /v1/validate. See https://github.com/SpaceApi/validator for more information.",
-		Version:     "2.0.0",
+		Version:     "1.1.0",
 	}
 
 	err := json.NewEncoder(writer).Encode(serverInfo)
