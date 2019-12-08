@@ -29,7 +29,7 @@ func main() {
 }
 
 func versionRedirect(writer http.ResponseWriter, request *http.Request) {
-	http.Redirect(writer, request, "/v1", 302)
+	http.Redirect(writer, request, "/v1/", 302)
 }
 
 func openAPI(writer http.ResponseWriter, request *http.Request) {
