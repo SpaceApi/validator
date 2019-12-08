@@ -1,5 +1,5 @@
 FROM golang:1.13-alpine as builder
-RUN apk --no-cache add git
+RUN apk --no-cache add git build-base
 WORKDIR /app
 COPY . .
 RUN go get -d  ./...
