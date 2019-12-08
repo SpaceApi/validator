@@ -1,42 +1,36 @@
 # Validation server for SpaceAPI endpoints
 
-Written in Python 3 with [Bottle](http://bottlepy.org/).
-
-https://validator.spaceapi.io/v1/
+https://validator.spaceapi.io/v2/
 
 [![CircleCI][circle-ci-badge]][circle-ci]
 [![Docker Image][docker-image-badge]][docker-image]
+[![Go Report Card][go-report-card-badge]][go-report-card]
 
 
 # Dev setup
 
 ## Dependencies
 
-Install Python 3 and [pipenv](https://github.com/pypa/pipenv).
+Install golang
 
 Then:
-
-    pipenv install --dev
-
-Enable env:
-
-    pipenv shell
-
-(Or prefix every Python command with `pipenv run`.)
+```bash
+go get -d  ./...
+go generate
+go install  ./...
+```
 
 ## Starting the Server
 
 Start the server:
 
-    cd validator
-    python server.py
+    validator
 
 ## Testing
 
 To run tests:
 
-    cd validator
-    py.test -v
+    go test ./...
 
 
 # API
@@ -118,3 +112,5 @@ be dual licensed as above, without any additional terms or conditions.
 [circle-ci-badge]: https://circleci.com/gh/SpaceApi/validator/tree/master.svg?style=shield
 [docker-image]: https://hub.docker.com/r/spaceapi/validator/
 [docker-image-badge]: https://img.shields.io/docker/pulls/spaceapi/validator.svg
+[go-report-card]: https://goreportcard.com/report/github.com/spaceapi/validator
+[go-report-card-badge]: https://goreportcard.com/badge/github.com/spaceapi/validator

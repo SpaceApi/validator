@@ -2,26 +2,17 @@ version: 2
 jobs:
   test:
     docker:
-      - image: python:3.6
+      - image: golang
     steps:
       - checkout
       - run:
-          name: Clone submodules
-          command: git submodule update --init --recursive
-      - run:
-          name: Install pip dependencies
-          command: pip install pipenv && pipenv install --dev
-      - run:
           name: Run tests
-          command: cd validator && pipenv run pytest
+          command: go test ./...
   build:
     docker:
       - image: docker:stable
     steps:
       - checkout
-      - run:
-          name: Clone submodules
-          command: apk add git && git submodule update --init --recursive
       - setup_remote_docker
       - run:
           name: Build Docker image
