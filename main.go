@@ -21,6 +21,13 @@ func main() {
 	root.HandleFunc(pat.Get("/"), versionRedirect)
 	root.HandleFunc(pat.Get("/openapi.json"), openAPI)
 
+	root.HandleFunc(pat.Get("/v1"), func (writer http.ResponseWriter, request *http.Request) {
+		http.Redirect(writer, request, "/v1/", 302)
+	})
+	root.HandleFunc(pat.Get("/v2"), func (writer http.ResponseWriter, request *http.Request) {
+		http.Redirect(writer, request, "/v2/", 302)
+	})
+
 	root.Handle(pat.New("/v1/*"), v1.GetSubMux())
 	root.Handle(pat.New("/v2/*"), v2.GetSubMux())
 

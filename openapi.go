@@ -33,7 +33,7 @@ var openapi = `{
         }
       }
     },
-    "/v1/validate": {
+    "/v1/validate/": {
       "post": {
         "tags": [
           "v1"
