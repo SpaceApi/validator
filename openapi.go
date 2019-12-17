@@ -33,24 +33,18 @@ var openapi = `{
         }
       }
     },
-    "/v1/validate": {
+    "/v1/validate/": {
       "post": {
         "tags": [
           "v1"
         ],
         "summary": "validate an input against the SpaceApi schema",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "properties": {
-                  "data": {
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "data"
-                ]
+                "$ref": "#/components/schemas/ValidateV1"
               }
             }
           }
@@ -61,18 +55,7 @@ var openapi = `{
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "valid": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "valid",
-                    "message"
-                  ]
+                  "$ref": "#/components/schemas/ValidateV1Response"
                 }
               }
             }
@@ -112,17 +95,11 @@ var openapi = `{
         ],
         "summary": "validate an input against the SpaceApi schema",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "properties": {
-                  "url": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "url"
-                ]
+                "$ref": "#/components/schemas/ValidateUrlV2"
               }
             }
           }
@@ -133,41 +110,7 @@ var openapi = `{
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "valid": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "isHttps": {
-                      "type": "boolean"
-                    },
-                    "httpsForward": {
-                      "type": "boolean"
-                    },
-                    "reachable": {
-                      "type": "boolean"
-                    },
-                    "cors": {
-                      "type": "boolean"
-                    },
-                    "contentType": {
-                      "type": "boolean"
-                    },
-                    "certValid": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "valid",
-                    "isHttps",
-                    "httpsForward",
-                    "reachable",
-                    "cors",
-                    "contentType",
-                    "certValid"
-                  ]
+                  "$ref": "#/components/schemas/ValidateUrlV2Response"
                 }
               }
             }
@@ -188,10 +131,11 @@ var openapi = `{
         ],
         "summary": "validate an input against the SpaceApi schema",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "$ref": "#/components/schemas/ValidateJsonV2"
               }
             }
           }
@@ -202,18 +146,7 @@ var openapi = `{
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "valid": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "valid",
-                    "message"
-                  ]
+                  "$ref": "#/components/schemas/ValidateJsonV2Response"
                 }
               }
             }
@@ -246,6 +179,94 @@ var openapi = `{
           "description",
           "usage",
           "version"
+        ]
+      },
+      "ValidateV1": {
+        "properties": {
+          "data": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ValidateUrlV2": {
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "ValidateJsonV2": {
+        "type": "object"
+      },
+      "ValidateV1Response": {
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "valid",
+          "message"
+        ]
+      },
+      "ValidateUrlV2Response": {
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "isHttps": {
+            "type": "boolean"
+          },
+          "httpsForward": {
+            "type": "boolean"
+          },
+          "reachable": {
+            "type": "boolean"
+          },
+          "cors": {
+            "type": "boolean"
+          },
+          "contentType": {
+            "type": "boolean"
+          },
+          "certValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "valid",
+          "isHttps",
+          "httpsForward",
+          "reachable",
+          "cors",
+          "contentType",
+          "certValid"
+        ]
+      },
+      "ValidateJsonV2Response": {
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "valid",
+          "message"
         ]
       }
     }
