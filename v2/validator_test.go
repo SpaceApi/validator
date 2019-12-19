@@ -31,6 +31,26 @@ var validSpace = `{
 
 var invalidSpace = `{ "data": "asd" }`
 
+var invalidSpaceApiVersion = `{
+	"api": 0.13,
+	"space": "my cool space",
+	"logo": "https://example.com/logo.png",
+	"url": "https://example.com",
+	"location": {
+		"address": "Ulmer Strasse 255, 70327 Stuttgart, Germany",
+		"lon": 9.236,
+		"lat": 48.777
+	},
+	"state": {
+		"open": false
+	},
+	"contact": {
+	},
+	"issue_report_channels": [
+		"email"
+	]
+}`
+
 func forgeValidateJSONRequest(t *testing.T, body io.Reader) *httptest.ResponseRecorder {
 	req, err := http.NewRequest("POST", "/v2/validateJSON", body)
 	if err != nil {
@@ -77,6 +97,26 @@ func TestValidateJsonWithValid(t *testing.T) {
 
 func TestValidateJsonWithInvalid(t *testing.T) {
 	rr := forgeValidateJSONRequest(t, strings.NewReader(invalidSpace))
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+
+	resp := jsonValidationResponse{}
+	err := json.NewDecoder(rr.Body).Decode(&resp)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if resp.Valid != false {
+		t.Errorf("handler returned wrong response: got %v want %v",
+			resp.Valid, false)
+	}
+}
+
+func TestValidateJsonWithInvalidSpaceApiVersion(t *testing.T) {
+	rr := forgeValidateJSONRequest(t, strings.NewReader(invalidSpaceApiVersion))
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
