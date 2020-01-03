@@ -4,7 +4,7 @@ var openapi = `{
   "openapi": "3.0.2",
   "info": {
     "description": "This is the SpaceApi Validator api",
-    "version": "0.0.1",
+    "version": "1.1.0",
     "title": "SpaceApi Validator"
   },
   "servers": [
@@ -194,7 +194,8 @@ var openapi = `{
       "ValidateUrlV2": {
         "properties": {
           "url": {
-            "type": "string"
+            "type": "string",
+            "pattern": "uri"
           }
         },
         "required": [
@@ -243,6 +244,15 @@ var openapi = `{
           },
           "certValid": {
             "type": "boolean"
+          },
+          "validatedJson": {
+            "type": "object"
+          },
+          "schemaErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaError"
+            }
           }
         },
         "required": [
@@ -262,10 +272,33 @@ var openapi = `{
           },
           "message": {
             "type": "string"
+          },
+          "validatedJson": {
+            "type": "object"
+          },
+          "schemaErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaError"
+            }
           }
         },
         "required": [
           "valid",
+          "message"
+        ]
+      },
+      "SchemaError": {
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
           "message"
         ]
       }
