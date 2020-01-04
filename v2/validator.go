@@ -25,15 +25,16 @@ type urlValidationRequest struct {
 }
 
 type urlValidationResponse struct {
-	Valid        bool          `json:"valid"`
-	Message      string        `json:"message,omitempty"`
-	IsHTTPS      bool          `json:"isHttps"`
-	HTTPSForward bool          `json:"httpsForward"`
-	Reachable    bool          `json:"reachable"`
-	Cors         bool          `json:"cors"`
-	ContentType  bool          `json:"contentType"`
-	CertValid    bool          `json:"certValid"`
-	SchemaErrors []schemaError `json:"schemaErrors,omitempty"`
+	Valid         bool          `json:"valid"`
+	Message       string        `json:"message,omitempty"`
+	IsHTTPS       bool          `json:"isHttps"`
+	HTTPSForward  bool          `json:"httpsForward"`
+	Reachable     bool          `json:"reachable"`
+	Cors          bool          `json:"cors"`
+	ContentType   bool          `json:"contentType"`
+	CertValid     bool          `json:"certValid"`
+	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
+	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
 
 type schemaError struct {
@@ -42,9 +43,10 @@ type schemaError struct {
 }
 
 type jsonValidationResponse struct {
-	Valid        bool          `json:"valid"`
-	Message      string        `json:"message"`
-	SchemaErrors []schemaError `json:"schemaErrors,omitempty"`
+	Valid         bool          `json:"valid"`
+	Message       string        `json:"message"`
+	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
+	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
 
 // GetSubMux returns the versions subrouter
@@ -129,6 +131,12 @@ func validateURL(writer http.ResponseWriter, request *http.Request) {
 
 		return
 	}
+	var raw map[string]interface{}
+	if err := json.Unmarshal([]byte(body), &raw); err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	valRes.ValidatedJson = raw
 
 	res, err := spaceapivalidator.Validate(body)
 	if err != nil {
@@ -227,8 +235,15 @@ func validateJSON(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	var raw map[string]interface{}
+	if err := json.Unmarshal(body, &raw); err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	resp := jsonValidationResponse{
-		Valid: res.Valid,
+		Valid:         res.Valid,
+		ValidatedJson: raw,
 	}
 
 	var errMsg string
@@ -239,7 +254,6 @@ func validateJSON(writer http.ResponseWriter, request *http.Request) {
 			Message: validatorError.Description,
 		})
 	}
-
 	resp.Message = errMsg
 
 	writer.Header().Add("Content-Type", "application/json")
