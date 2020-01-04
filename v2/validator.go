@@ -58,7 +58,7 @@ func GetSubMux() *goji.Mux {
 		pat.Post("/validateURL"),
 		limit(
 			http.HandlerFunc(validateURL),
-			rate.NewLimiter(10, 25),
+			rate.NewLimiter(200, 500), // (rate, burst)
 		),
 	)
 
