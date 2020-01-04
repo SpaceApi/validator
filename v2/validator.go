@@ -25,16 +25,16 @@ type urlValidationRequest struct {
 }
 
 type urlValidationResponse struct {
-	Valid        bool          `json:"valid"`
-	Message      string        `json:"message,omitempty"`
-	IsHTTPS      bool          `json:"isHttps"`
-	HTTPSForward bool          `json:"httpsForward"`
-	Reachable    bool          `json:"reachable"`
-	Cors         bool          `json:"cors"`
-	ContentType  bool          `json:"contentType"`
-	CertValid    bool          `json:"certValid"`
-	ValidatedJson interface{} `json:"validatedJson,omitempty"`
-	SchemaErrors []schemaError `json:"schemaErrors,omitempty"`
+	Valid         bool          `json:"valid"`
+	Message       string        `json:"message,omitempty"`
+	IsHTTPS       bool          `json:"isHttps"`
+	HTTPSForward  bool          `json:"httpsForward"`
+	Reachable     bool          `json:"reachable"`
+	Cors          bool          `json:"cors"`
+	ContentType   bool          `json:"contentType"`
+	CertValid     bool          `json:"certValid"`
+	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
+	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
 
 type schemaError struct {
@@ -43,10 +43,10 @@ type schemaError struct {
 }
 
 type jsonValidationResponse struct {
-	Valid        bool          `json:"valid"`
-	Message      string        `json:"message"`
-	ValidatedJson interface{} `json:"validatedJson,omitempty"`
-	SchemaErrors []schemaError `json:"schemaErrors,omitempty"`
+	Valid         bool          `json:"valid"`
+	Message       string        `json:"message"`
+	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
+	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
 
 // GetSubMux returns the versions subrouter
@@ -242,7 +242,7 @@ func validateJSON(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	resp := jsonValidationResponse{
-		Valid: res.Valid,
+		Valid:         res.Valid,
 		ValidatedJson: raw,
 	}
 
