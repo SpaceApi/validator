@@ -206,6 +206,12 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		validationResponse.Reachable = false
 		return nil, "", nil
 	}
+	defer func() {
+		err := response.Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	if response.StatusCode >= 400 {
 		validationResponse.Reachable = false
