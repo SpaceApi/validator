@@ -1,92 +1,82 @@
 # Validation server for SpaceAPI endpoints
 
-https://validator.spaceapi.io/v2/
+OpenAPI spec: https://validator.spaceapi.io/openapi.json
 
 [![CircleCI][circle-ci-badge]][circle-ci]
 [![Docker Image][docker-image-badge]][docker-image]
 [![Go Report Card][go-report-card-badge]][go-report-card]
 
 
-# Dev setup
-
-## Dependencies
-
-Install golang
-
-Then:
-```bash
-go get -d  ./...
-go generate
-go install  ./...
-```
-
-## Starting the Server
-
-Start the server:
-
-    validator
-
-## Testing
-
-To run tests:
-
-    go test ./...
-
-
 # API
 
-## Request
+There are two main endpoints, to validate raw JSON and to validate URLs:
 
-To send a validation request, send a POST request to `/v1/validate/` with
-`Content-Type: application/json`. The payload (in JSON format) should look like
-this:
+- https://validator.spaceapi.io/v2/validateURL
+- https://validator.spaceapi.io/v2/validateJSON
 
-```javascript
-{
-    "data": "..."
-}
-```
+The full API specification in OpenAPI format can be found at https://validator.spaceapi.io/openapi.json.
 
-The `data` field should contain the SpaceAPI endpoint data as a JSON string.
+## Validating URLs
+
+Use this if your endpoint is already online.
 
 Example (curl):
 
-    curl \
-        -X POST \
-        -H "Content-Type: application/json" \
-        https://validator.spaceapi.io/v1/validate/ \
-        -d'{"data": "{\"api\": \"0.13\"}"}'
+    curl -X POST -H "Content-Type: application/json" \
+        https://validator.spaceapi.io/v2/validateURL \
+        -d'{"url": "https://status.crdmp.ch/"}'
 
 Example (httpie):
 
-    http POST \
-        https://validator.spaceapi.io/v1/validate/ \
-        data='{"api": "0.13"}'
+    http post \
+        https://validator.spaceapi.io/v2/validateURL \
+        url=https://status.crdmp.ch/
 
-## Response
+Response:
 
-If the request is not malformed, the endpoint returns a HTTP 200 response with
-`Content-Type: application/json`.
+    {
+        "valid": true,
+        "message": "",
+        "isHttps": true,
+        "httpsForward": false,
+        "reachable": true,
+        "cors": true,
+        "contentType": true,
+        "certValid": true,
+        "validatedJson": { … },
+        "schemaErrors": [ … ]
+    }
 
-The success response looks like this:
+## Validating JSON
 
-```javascript
-{
-    "valid": true,
-    "message": null
-}
-```
+If you want to validate JSON data directly, use this endpoint. However, in
+contrast to the URL endpoint, only the content will be validated, but not the
+server configuration (e.g. whether CORS is set up properly or whether a valid
+certificate is being used).
 
-The error response looks like this:
+Example (curl):
 
-```javascript
-{
-    "valid": false,
-    "message": "Error details"
-}
-```
+    curl -X POST -H "Content-Type: application/json" \
+        https://validator.spaceapi.io/v2/validateJSON \
+        -d @mydata.json
 
-It is planned that more error details (like row/col) will be added in the future.
+Example (httpie):
+
+    cat mydata.json | http post https://validator.spaceapi.io/v2/validateJSON
+
+Response:
+
+    {
+        "message": "",
+        "valid": true,
+        "validatedJson": { … },
+        "schemaErrors": [ … ]
+    }
+
+
+# Dev setup
+
+See `DEVELOPMENT.md`.
 
 
 # License
