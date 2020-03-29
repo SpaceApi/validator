@@ -16,6 +16,7 @@ var openapi = `{
   "paths": {
     "/v1": {
       "get": {
+        "deprecated": true,
         "tags": [
           "v1"
         ],
@@ -35,6 +36,7 @@ var openapi = `{
     },
     "/v1/validate/": {
       "post": {
+        "deprecated": true,
         "tags": [
           "v1"
         ],
