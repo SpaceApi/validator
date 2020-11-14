@@ -25,16 +25,17 @@ type urlValidationRequest struct {
 }
 
 type urlValidationResponse struct {
-	Valid         bool          `json:"valid"`
-	Message       string        `json:"message,omitempty"`
-	IsHTTPS       bool          `json:"isHttps"`
-	HTTPSForward  bool          `json:"httpsForward"`
-	Reachable     bool          `json:"reachable"`
-	Cors          bool          `json:"cors"`
-	ContentType   bool          `json:"contentType"`
-	CertValid     bool          `json:"certValid"`
-	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
-	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
+	Valid         	bool          `json:"valid"`
+	Message       	string        `json:"message,omitempty"`
+	IsHTTPS       	bool          `json:"isHttps"`
+	HTTPSForward  	bool          `json:"httpsForward"`
+	Reachable     	bool          `json:"reachable"`
+	Cors          	bool          `json:"cors"`
+	ContentType   	bool          `json:"contentType"`
+	CertValid     	bool          `json:"certValid"`
+	CheckedVersions	[]string	`json:"checked_versions,omitempty"`
+	ValidatedJson 	interface{}   `json:"validatedJson,omitempty"`
+	SchemaErrors  	[]schemaError `json:"schemaErrors,omitempty"`
 }
 
 type schemaError struct {
@@ -45,6 +46,7 @@ type schemaError struct {
 type jsonValidationResponse struct {
 	Valid         bool          `json:"valid"`
 	Message       string        `json:"message"`
+	CheckedVersions	[]string	`json:"checked_versions,omitempty"`
 	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
 	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
@@ -142,6 +144,10 @@ func validateURL(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	for _, schema := range res.Schemas {
+		valRes.CheckedVersions = append(valRes.CheckedVersions, schema.Version)
 	}
 
 	valRes.Valid = res.Valid
@@ -250,6 +256,10 @@ func validateJSON(writer http.ResponseWriter, request *http.Request) {
 	resp := jsonValidationResponse{
 		Valid:         res.Valid,
 		ValidatedJson: raw,
+	}
+
+	for _, schema := range res.Schemas {
+		resp.CheckedVersions = append(resp.CheckedVersions, schema.Version)
 	}
 
 	var errMsg string
