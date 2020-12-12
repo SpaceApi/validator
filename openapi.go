@@ -247,6 +247,12 @@ var openapi = `{
           "certValid": {
             "type": "boolean"
           },
+          "checkedVersions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "validatedJson": {
             "type": "object"
           },
@@ -274,6 +280,12 @@ var openapi = `{
           },
           "message": {
             "type": "string"
+          },          
+          "checkedVersions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "validatedJson": {
             "type": "object"

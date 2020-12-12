@@ -33,7 +33,7 @@ type urlValidationResponse struct {
 	Cors          	bool          `json:"cors"`
 	ContentType   	bool          `json:"contentType"`
 	CertValid     	bool          `json:"certValid"`
-	CheckedVersions	[]string	`json:"checked_versions,omitempty"`
+	CheckedVersions	[]string      `json:"checkedVersions,omitempty"`
 	ValidatedJson 	interface{}   `json:"validatedJson,omitempty"`
 	SchemaErrors  	[]schemaError `json:"schemaErrors,omitempty"`
 }
@@ -46,7 +46,7 @@ type schemaError struct {
 type jsonValidationResponse struct {
 	Valid         bool          `json:"valid"`
 	Message       string        `json:"message"`
-	CheckedVersions	[]string	`json:"checked_versions,omitempty"`
+	CheckedVersions	[]string	`json:"checkedVersions,omitempty"`
 	ValidatedJson interface{}   `json:"validatedJson,omitempty"`
 	SchemaErrors  []schemaError `json:"schemaErrors,omitempty"`
 }
