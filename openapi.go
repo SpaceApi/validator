@@ -4,7 +4,7 @@ var openapi = `{
   "openapi": "3.0.2",
   "info": {
     "description": "This is the SpaceApi Validator api",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "title": "SpaceApi Validator"
   },
   "servers": [
