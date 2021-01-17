@@ -7,6 +7,7 @@ import (
 	"goji.io"
 	"goji.io/pat"
 	"golang.org/x/time/rate"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -185,7 +186,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipVerify},
 	}
 
-	client := &http.Client{
+	client := http.Client{
 		Timeout: time.Second * 10,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			if req.URL.Scheme == "https" {
@@ -195,6 +196,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		},
 		Transport: tr,
 	}
+	defer client.CloseIdleConnections()
 
 	req, err := http.NewRequest("GET", url.String(), nil)
 	if err != nil {
@@ -212,6 +214,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		validationResponse.Reachable = false
 		return nil, "", nil
 	}
+
 	defer func() {
 		err := response.Body.Close()
 		if err != nil {
@@ -221,6 +224,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 
 	if response.StatusCode >= 400 {
 		validationResponse.Reachable = false
+		_, _ = io.Copy(ioutil.Discard, response.Body)
 		return nil, "", nil
 	}
 
