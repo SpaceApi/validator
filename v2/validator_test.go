@@ -319,7 +319,7 @@ func TestValidateUrlInvalidSpace(t *testing.T) {
 	defer ts.Close()
 
 	rr := forgeValidateURLRequest(t, strings.NewReader(`{ "url": "`+ts.URL+`" }`))
-    t.Logf("%v", rr.Body)
+	t.Logf("%v", rr.Body)
 	resp := urlValidationResponse{}
 	err := json.NewDecoder(rr.Body).Decode(&resp)
 	if err != nil {
