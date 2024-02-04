@@ -31,7 +31,7 @@ func main() {
 	root.Handle(pat.New("/v1/*"), v1.GetSubMux())
 	root.Handle(pat.New("/v2/*"), v2.GetSubMux())
 
-	log.Println("starting validator...")
+	log.Println("starting validator on port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", root))
 }
 
