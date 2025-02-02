@@ -1,0 +1,33 @@
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 5 * * 1"
+
+name: publish
+
+jobs:
+  test:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build validator image
+        run: |
+          docker build \
+            --no-cache \
+            --tag ghcr.io/spaceapi/validator:latest \
+            --tag ghcr.io/spaceapi/validator:$GITHUB_REF_NAME \
+            --label "org.opencontainers.image.source=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
+            .
+      - name: Publish validator image
+        run: |
+          docker push -a ghcr.io/spaceapi/validator
