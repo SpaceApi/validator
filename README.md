@@ -100,7 +100,7 @@ be dual licensed as above, without any additional terms or conditions.
 <!-- Badges -->
 [circle-ci]: https://circleci.com/gh/SpaceApi/validator/tree/master
 [circle-ci-badge]: https://circleci.com/gh/SpaceApi/validator/tree/master.svg?style=shield
-[docker-image]: https://hub.docker.com/r/spaceapi/validator/
-[docker-image-badge]: https://img.shields.io/docker/pulls/spaceapi/validator.svg
+[docker-image]: https://github.com/SpaceApi/validator/pkgs/container/validator
+[docker-image-badge]: https://img.shields.io/badge/container%20image-ghcr.io/spaceapi/validator-blue.svg
 [go-report-card]: https://goreportcard.com/report/github.com/spaceapi/validator
 [go-report-card-badge]: https://goreportcard.com/badge/github.com/spaceapi/validator
