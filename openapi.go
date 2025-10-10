@@ -4,7 +4,7 @@ var openapi = `{
   "openapi": "3.0.2",
   "info": {
     "description": "This is the SpaceApi Validator api",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "title": "SpaceApi Validator"
   },
   "servers": [
@@ -235,7 +235,16 @@ var openapi = `{
           "httpsForward": {
             "type": "boolean"
           },
+	  "httpStatus": {
+            "type": "integer"
+          },
           "reachable": {
+            "type": "boolean"
+          },
+          "reachableIPv6": {
+            "type": "boolean"
+          },
+          "reachableIPv4": {
             "type": "boolean"
           },
           "cors": {
@@ -267,7 +276,10 @@ var openapi = `{
           "valid",
           "isHttps",
           "httpsForward",
+          "httpStatus",
           "reachable",
+          "reachableIPv6",
+          "reachableIPv4",
           "cors",
           "contentType",
           "certValid"

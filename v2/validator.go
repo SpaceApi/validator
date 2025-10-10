@@ -1,6 +1,7 @@
 package v2
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"golang.org/x/time/rate"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -31,7 +33,10 @@ type urlValidationResponse struct {
 	Message         string        `json:"message,omitempty"`
 	IsHTTPS         bool          `json:"isHttps"`
 	HTTPSForward    bool          `json:"httpsForward"`
+	HTTPStatus      int           `json:"httpStatus"`
 	Reachable       bool          `json:"reachable"`
+	ReachableIPv4   bool          `json:"reachableIPv4"`
+	ReachableIPv6   bool          `json:"reachableIPv6"`
 	Cors            bool          `json:"cors"`
 	ContentType     bool          `json:"contentType"`
 	CertValid       bool          `json:"certValid"`
@@ -183,10 +188,33 @@ func checkHeader(response *urlValidationResponse, header http.Header) {
 }
 
 func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerify bool) (http.Header, string, error) {
+	dialer := net.Dialer{}
+	trv6 := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipVerify},
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return dialer.DialContext(ctx, "tcp6", addr)
+		},
+	}
+	trv4 := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipVerify},
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return dialer.DialContext(ctx, "tcp4", addr)
+		},
+	}
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipVerify},
 	}
 
+	clientv6 := http.Client{
+		Timeout: time.Second * 10,
+		Transport: trv6,
+	}
+	defer clientv6.CloseIdleConnections()
+	clientv4 := http.Client{
+		Timeout: time.Second * 10,
+		Transport: trv4,
+	}
+	defer clientv4.CloseIdleConnections()
 	client := http.Client{
 		Timeout: time.Second * 10,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -206,6 +234,25 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 	}
 
 	req.Header.Add("Origin", "https://validator.spaceapi.io")
+
+	responsev6, err := clientv6.Do(req)
+	if err == nil {
+		validationResponse.ReachableIPv6 = true
+		err = responsev6.Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	responsev4, err := clientv4.Do(req)
+	if err == nil {
+		validationResponse.ReachableIPv4 = true
+		err = responsev4.Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	response, err := client.Do(req)
 	if err != nil {
 		if skipVerify == false {
@@ -223,6 +270,7 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 		}
 	}()
 
+	validationResponse.HTTPStatus = response.StatusCode
 	if response.StatusCode >= 400 {
 		validationResponse.Reachable = false
 		_, _ = io.Copy(ioutil.Discard, response.Body)
