@@ -189,6 +189,7 @@ func checkHeader(response *urlValidationResponse, header http.Header) {
 
 func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerify bool) (http.Header, string, error) {
 	dialer := net.Dialer{}
+	httpTimeout := 10 * time.Second
 	trv6 := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipVerify},
 		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
@@ -206,17 +207,17 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 	}
 
 	clientv6 := http.Client{
-		Timeout: time.Second * 10,
+		Timeout: httpTimeout,
 		Transport: trv6,
 	}
 	defer clientv6.CloseIdleConnections()
 	clientv4 := http.Client{
-		Timeout: time.Second * 10,
+		Timeout: httpTimeout,
 		Transport: trv4,
 	}
 	defer clientv4.CloseIdleConnections()
 	client := http.Client{
-		Timeout: time.Second * 10,
+		Timeout: httpTimeout,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			if req.URL.Scheme == "https" {
 				validationResponse.HTTPSForward = true
