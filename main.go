@@ -4,6 +4,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/spaceapi/validator/v1"
 	"github.com/spaceapi/validator/v2"
+	"github.com/spaceapi/validator/v3"
 	"github.com/swaggo/http-swagger"
 	"goji.io"
 	"goji.io/pat"
@@ -35,16 +36,20 @@ func main() {
 	root.HandleFunc(pat.Get("/v2"), func(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/v2/", 302)
 	})
+	root.HandleFunc(pat.Get("/v3"), func(writer http.ResponseWriter, request *http.Request) {
+		http.Redirect(writer, request, "/v3/", 302)
+	})
 
 	root.Handle(pat.New("/v1/*"), v1.GetSubMux())
 	root.Handle(pat.New("/v2/*"), v2.GetSubMux())
+	root.Handle(pat.New("/v3/*"), v3.GetSubMux())
 
 	log.Println("starting validator on port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", root))
 }
 
 func versionRedirect(writer http.ResponseWriter, request *http.Request) {
-	http.Redirect(writer, request, "/v1/", 302)
+	http.Redirect(writer, request, "/v3/", 302)
 }
 
 func openAPI(writer http.ResponseWriter, _ *http.Request) {

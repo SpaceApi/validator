@@ -22,7 +22,7 @@ func TestRootRedirect(t *testing.T) {
 			status, http.StatusFound)
 	}
 
-	if location := rr.Header().Get("Location"); location != "/v1/" {
+	if location := rr.Header().Get("Location"); location != "/v3/" {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			location, "/v1/")
 	}
