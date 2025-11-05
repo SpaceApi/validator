@@ -3,6 +3,7 @@ package v2
 import (
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	spaceapivalidator "github.com/spaceapi-community/go-spaceapi-validator"
 	"goji.io"
@@ -190,6 +191,9 @@ func fetchURL(validationResponse *urlValidationResponse, url *url.URL, skipVerif
 	client := http.Client{
 		Timeout: time.Second * 10,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			if len(via) >= 10 {
+				return errors.New("Too many redirects")
+			}
 			if req.URL.Scheme == "https" {
 				validationResponse.HTTPSForward = true
 			}
