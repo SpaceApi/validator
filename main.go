@@ -4,6 +4,7 @@ import (
 	"github.com/rs/cors"
 	"github.com/spaceapi/validator/v1"
 	"github.com/spaceapi/validator/v2"
+	"github.com/swaggo/http-swagger"
 	"goji.io"
 	"goji.io/pat"
 	"log"
@@ -19,7 +20,14 @@ func main() {
 	root.Use(c.Handler)
 
 	root.HandleFunc(pat.Get("/"), versionRedirect)
+
 	root.HandleFunc(pat.Get("/openapi.json"), openAPI)
+	root.Handle(pat.New("/swagger/*"), httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8080/openapi.json"),
+	))
+	root.HandleFunc(pat.Get("/swagger"), func(writer http.ResponseWriter, request *http.Request) {
+		http.Redirect(writer, request, "/swagger/index.html", 302)
+	})
 
 	root.HandleFunc(pat.Get("/v1"), func(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/v1/", 302)
